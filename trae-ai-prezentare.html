@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Utilizarea aplicației Trae AI în procesul educațional - PrezentăriPro</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .presentation-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .presentation-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 4rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .presentation-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+            animation: float 20s infinite linear;
+        }
+        
+        @keyframes float {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        .presentation-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .presentation-hero p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .slide-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            padding: 1.5rem 2rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            flex-wrap: wrap;
+        }
+        
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            min-width: 120px;
+            justify-content: center;
+        }
+        
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .nav-btn:hover::before {
+            left: 100%;
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .nav-btn:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+        
+        .nav-btn:disabled {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        
+        .nav-btn:disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .nav-btn span {
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+        
+        .slide-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.8rem;
+            flex: 1;
+            max-width: 300px;
+        }
+        
+        .slide-counter {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #495057;
+            background: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 2px solid #e9ecef;
+        }
+        
+        .slide-nav-btn {
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .slide-nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
+        }
+        
+        .slide-nav-btn.active {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            transform: scale(1.1);
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        .modern-slide {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid #f0f0f0;
+            position: relative;
+            overflow: hidden;
+            display: none;
+            animation: slideIn 0.6s ease-out;
+        }
+        
+        .modern-slide.active {
+            display: block;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .slide-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid #ff6b35;
+        }
+        
+        .slide-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .slide-title {
+            font-size: 2rem;
+            color: #333;
+            margin: 0;
+            flex: 1;
+        }
+        
+        .slide-number-badge {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        .slide-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+        }
+        
+        .slide-content h3 {
+            color: #ff6b35;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+        
+        .slide-content ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .slide-content li {
+            background: #f8f9fa;
+            margin: 0.8rem 0;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid #ff6b35;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .slide-content li:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.2);
+        }
+        
+        .slide-content li::before {
+            content: '✓';
+            position: absolute;
+            left: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #ff6b35;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .feature-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .conclusion-slide {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            text-align: center;
+        }
+        
+        .thank-you-slide {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%) !important;
+            color: #ffffff;
+            border: none;
+            box-shadow: none;
+        }
+        
+        /* Disable decorative glows on the gradient slide */
+        .modern-slide.thank-you-slide::before,
+        .modern-slide.thank-you-slide::after {
+            content: none;
+        }
+        
+        @media (max-width: 768px) {
+            .presentation-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .modern-slide {
+                padding: 2rem 1.5rem;
+            }
+            
+            .slide-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .slide-title {
+                font-size: 1.5rem;
+            }
+        }
+    /* Page background inspired by the provided design */
+    body {
+      background: radial-gradient(1200px 600px at -10% 10%, rgba(123, 97, 255, 0.25), transparent 60%),
+                  radial-gradient(900px 500px at 110% 0%, rgba(59, 193, 255, 0.22), transparent 60%),
+                  linear-gradient(135deg, #0f172a 0%, #111827 60%, #0b1324 100%);
+    }
+    
+    .presentation-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    
+    /* Navigation bar for slides on dark surface */
+    .slide-navigation {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 2rem;
+      margin: 2rem 0;
+      padding: 1.5rem 2rem;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.35);
+      border: 1px solid rgba(255,255,255,0.18);
+      backdrop-filter: blur(12px);
+      flex-wrap: wrap;
+    }
+    
+    .slide-counter {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #e5e7eb;
+      background: rgba(255,255,255,0.07);
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.35);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(135deg, #7b61ff 0%, #3bc1ff 100%);
+      border-radius: 10px;
+      transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    /* Core slide card — dark glass look */
+    .modern-slide {
+      background: rgba(255,255,255,0.06);
+      border-radius: 24px;
+      padding: 3rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+      border: 1px solid rgba(255,255,255,0.16);
+      position: relative;
+      overflow: hidden;
+      display: none;
+      animation: slideIn 0.6s ease-out;
+      color: #e5e7eb;
+      backdrop-filter: blur(10px);
+    }
+    
+    .modern-slide::before,
+    .modern-slide::after {
+      content: '';
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      filter: blur(40px);
+      opacity: 0.25;
+      pointer-events: none;
+    }
+    
+    .modern-slide::before {
+      top: -80px;
+      left: -80px;
+      background: radial-gradient(circle at 30% 30%, #7b61ff, transparent 60%);
+    }
+    
+    .modern-slide::after {
+      bottom: -80px;
+      right: -80px;
+      background: radial-gradient(circle at 70% 70%, #3bc1ff, transparent 60%);
+    }
+    
+    .modern-slide.active { display: block; }
+    
+    .slide-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 3px solid #7b61ff;
+    }
+    
+    .slide-icon {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #7b61ff, #3bc1ff);
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+    }
+    
+    .slide-title {
+      font-size: 2.2rem;
+      color: #ffffff;
+      margin: 0;
+      flex: 1;
+    }
+    
+    .slide-number-badge {
+      background: linear-gradient(135deg, #7b61ff, #3bc1ff);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+    
+    .slide-content { font-size: 1.1rem; line-height: 1.8; color: #d1d5db; }
+    
+    .slide-content h3 {
+      color: #8ab4ff;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      font-size: 1.4rem;
+    }
+    
+    .slide-content ul { list-style: none; padding: 0; }
+    
+    .slide-content li {
+      background: rgba(255,255,255,0.06);
+      margin: 0.8rem 0;
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      border-left: 4px solid #7b61ff;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .slide-content li:hover { transform: translateX(5px); box-shadow: 0 8px 20px rgba(123, 97, 255, 0.25); }
+    
+    .slide-content li::before {
+      content: '✓';
+      position: absolute;
+      left: -15px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #7b61ff;
+      color: white;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+    
+    .highlight-box {
+      background: linear-gradient(135deg, rgba(123,97,255,0.9), rgba(59,193,255,0.9));
+      color: white;
+      padding: 2rem;
+      border-radius: 18px;
+      margin: 2rem 0;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    
+    .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+    
+    .feature-card {
+      background: linear-gradient(135deg, rgba(240,147,251,0.85) 0%, rgba(245,87,108,0.85) 100%);
+      color: white;
+      padding: 2rem;
+      border-radius: 16px;
+      text-align: center;
+      transition: transform 0.3s ease;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+    }
+    
+    .feature-card:hover { transform: translateY(-5px); }
+    
+    /* Conclusion and thank-you slides keep bright gradients */
+    .conclusion-slide { color: white; text-align: center; }
+    .thank-you-slide { color: white; text-align: center; }
+    
+    @media (max-width: 768px) {
+      .modern-slide { padding: 2rem 1.5rem; }
+      .slide-header { flex-direction: column; text-align: center; }
+      .slide-title { font-size: 1.8rem; }
+    }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>PrezentăriPro</h2>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">Acasă</a>
+                </li>
+                <li class="nav-item">
+                    <a href="prezentari.html" class="nav-link">Prezentări</a>
+                </li>
+                <li class="nav-item">
+                    <a href="adauga.html" class="nav-link">Adaugă Prezentare</a>
+                </li>
+                <li class="nav-item">
+                    <a href="despre.html" class="nav-link">Despre</a>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="presentation-container">
+        <div class="presentation-hero">
+            <h1>Utilizarea aplicației Trae AI în procesul educațional și în activitatea profesională a unui specialist IT</h1>
+            <p>Beneficii pentru profesori și elevi și în activitatea profesională a unui specialist IT</p>
+        </div>
+        
+        <!-- Slide Navigation -->
+    <div class="slide-navigation">
+        <button class="nav-btn prev" onclick="prevSlide()" title="Slide anterior (←)">
+            <span>←</span> Anterior
+        </button>
+        
+        <div class="slide-info">
+            <span class="slide-counter"></span>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+        </div>
+        
+        <button class="nav-btn next" onclick="nextSlide()" title="Slide următor (→)">
+            Următor <span>→</span>
+        </button>
+    </div>
+
+    <main class="slides-container">
+        <!-- Slide 1 -->
+        <div class="modern-slide active" id="slide-1">
+            <div class="slide-header">
+                <div class="slide-icon">🎯</div>
+                <h2 class="slide-title">Prezentarea Trae AI</h2>
+                <div class="slide-number-badge">Slide 1</div>
+            </div>
+            <div class="slide-content">
+                <div class="highlight-box">
+                    <h3>Utilizarea aplicației Trae AI în procesul educațional</h3>
+                    <p><strong>Profesor:</strong> Gabriela Neculcea</p>
+                    <p><strong>Materia predată:</strong>Instruire asistată de calculator </p>
+                    <p><strong>Subtitlu:</strong> Beneficii pentru profesori și elevi </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="modern-slide" id="slide-2">
+            <div class="slide-header">
+                <div class="slide-icon">🧠</div>
+                <h2 class="slide-title">Introducere în AI</h2>
+                <div class="slide-number-badge">Slide 2</div>
+            </div>
+            <div class="slide-content">
+                <h3>🤔 Ce este inteligența artificială (AI)?</h3>
+                <p>Inteligența artificială reprezintă capacitatea sistemelor informatice de a simula procesele cognitive umane, cum ar fi învățarea, raționamentul și rezolvarea problemelor. În educație, AI devine un instrument puternic care poate transforma modul în care predăm și învățăm.</p>
+                
+                <h3>🎯 De ce este importantă AI în educație?</h3>
+                <ul>
+                    <li>📚 Personalizarea procesului de învățare</li>
+                    <li>⚡ Automatizarea sarcinilor repetitive</li>
+                    <li>💬 Feedback instant și precis</li>
+                    <li>🎨 Adaptarea la ritmul fiecărui elev</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <h3>🚀 Platforma Trae AI</h3>
+                    <p>Trae AI este o aplicație inovatoare care sprijină atât profesorii, cât și elevii în procesul educațional, oferind instrumente inteligente pentru crearea de conținut, evaluare și învățare personalizată.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="modern-slide" id="slide-3">
+            <div class="slide-header">
+                <div class="slide-icon">👨‍🏫</div>
+                <h2 class="slide-title">Profesorul și Trae AI</h2>
+                <div class="slide-number-badge">Slide 3</div>
+            </div>
+            <div class="slide-content">
+                <h3>🛠️ Cum folosește profesorul aplicația Trae AI</h3>
+                <ul>
+                    <li>📝 <strong>Generarea de exerciții:</strong> Profesorul utilizează Trae AI pentru a genera exerciții variate și adaptate nivelului clasei</li>
+                    <li>📋 <strong>Planuri de lecție:</strong> Crearea rapidă de planuri de lecție structurate și detaliate</li>
+                    <li>📄 <strong>Fișe de lucru:</strong> Dezvoltarea de materiale didactice personalizate pentru diferite tipuri de activități</li>
+                    <li>❓ <strong>Întrebări de evaluare:</strong> Generarea de întrebări pentru teste și evaluări continue</li>
+                    <li>🎯 <strong>Adaptarea conținutului:</strong> Poate adapta conținutul la nivelul clasei și la ritmul de învățare al fiecărui elev</li>
+                    <li>💡 <strong>Sugestii pedagogice:</strong> Primește sugestii pentru explicații, exemple și metode interactive de predare</li>
+                    <li>⏰ <strong>Eficiență temporală:</strong> Economisește timp în pregătirea materialelor și poate oferi feedback mai rapid</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 4 -->
+        <div class="modern-slide" id="slide-4">
+            <div class="slide-header">
+                <div class="slide-icon">🌟</div>
+                <h2 class="slide-title">Beneficiile pentru Profesor</h2>
+                <div class="slide-number-badge">Slide 4</div>
+            </div>
+            <div class="slide-content">
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h4>📊 Organizare Eficientă</h4>
+                        <p>Structurarea optimă a timpului și resurselor didactice</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🎨 Conținut Personalizat</h4>
+                        <p>Posibilitatea de a crea conținut adaptat nevoilor specifice ale fiecărei clase</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🚀 Inovare Pedagogică</h4>
+                        <p>Sprijin în implementarea de noi tehnici și abordări pedagogice moderne</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>📈 Monitorizare Progres</h4>
+                        <p>Utilizarea instrumentelor AI pentru urmărirea și analiza performanțelor elevilor</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>📋 Reducerea Sarcinii Administrative</h4>
+                        <p>Automatizarea proceselor repetitive pentru mai mult timp dedicat predării</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🎓 Dezvoltare Profesională</h4>
+                        <p>Acces la resurse și sugestii pentru îmbunătățirea competențelor didactice</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5 -->
+        <div class="modern-slide" id="slide-5">
+            <div class="slide-header">
+                <div class="slide-icon">👨‍🎓</div>
+                <h2 class="slide-title">Elevii și Trae AI</h2>
+                <div class="slide-number-badge">Slide 5</div>
+            </div>
+            <div class="slide-content">
+                <h3>🎯 Cum îi ajută aplicația Trae AI pe elevi</h3>
+                <ul>
+                    <li>💡 <strong>Explicații suplimentare:</strong> Elevii pot folosi platforma pentru a primi explicații detaliate și exemple adaptate nevoilor lor specifice</li>
+                    <li>⏱️ <strong>Învățare în ritm propriu:</strong> Pot învăța într-un ritm personalizat și pot repeta noțiunile neînțelese de câte ori este necesar</li>
+                    <li>🎯 <strong>Exerciții adaptate:</strong> Accesul la exerciții generate special pentru nivelul lor de cunoștințe și stilul de învățare</li>
+                    <li>⚡ <strong>Feedback instant:</strong> Trae AI oferă feedback imediat, ceea ce îi ajută să înțeleagă greșelile și să se corecteze rapid</li>
+                    <li>🎮 <strong>Motivație crescută:</strong> Îi motivează să învețe printr-o interacțiune modernă, atractivă și interactivă</li>
+                    <li>🌙 <strong>Suport 24/7:</strong> Disponibilitatea constantă a platformei pentru întrebări și clarificări</li>
+                </ul>
+            </div>
+        </div>
+
+
+
+        <!-- Slide 6 -->
+        <div class="modern-slide" id="slide-6">
+            <div class="slide-header">
+                <div class="slide-icon">💼</div>
+                <h2 class="slide-title">Trae AI în Activitatea IT</h2>
+                <div class="slide-number-badge">Slide 6</div>
+            </div>
+            <div class="slide-content">
+                <div class="highlight-box">
+                    <h3>Utilizarea aplicației Trae AI în activitatea profesională a specialistului IT</h3>
+                    <p><strong>Focus:</strong> Optimizarea proceselor de lucru și îmbunătățirea productivității în domeniul IT</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7 -->
+        <div class="modern-slide" id="slide-7">
+            <div class="slide-header">
+                <div class="slide-icon">🔧</div>
+                <h2 class="slide-title">AI în Domeniul IT</h2>
+                <div class="slide-number-badge">Slide 7</div>
+            </div>
+            <div class="slide-content">
+                <h3>🤖 Conceptul de inteligență artificială în IT</h3>
+                <p>În domeniul IT, inteligența artificială reprezintă un set de tehnologii și algoritmi care permit automatizarea proceselor complexe, analiza datelor la scară largă și optimizarea fluxurilor de lucru.</p>
+                
+                <h3>⚡ Importanța AI în IT</h3>
+                <ul>
+                    <li>🔄 Automatizarea sarcinilor repetitive</li>
+                    <li>📊 Analiza și procesarea rapidă a datelor</li>
+                    <li>✨ Îmbunătățirea calității codului și a documentației</li>
+                    <li>🚀 Optimizarea proceselor de dezvoltare</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <h3>🛠️ Aplicația Trae AI pentru profesioniști</h3>
+                    <p>Trae AI este o platformă bazată pe AI concepută pentru a sprijini profesioniștii în crearea de conținut, automatizare și analiză, oferind instrumente specializate pentru domeniul IT.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8 -->
+        <div class="modern-slide" id="slide-8">
+            <div class="slide-header">
+                <div class="slide-icon">💡</div>
+                <h2 class="slide-title">Scenarii Concrete de Utilizare</h2>
+                <div class="slide-number-badge">Slide 8</div>
+            </div>
+            <div class="slide-content">
+                <h3>👨‍💻 Pentru un Developer:</h3>
+                <ul>
+                    <li>📝 <strong>Generarea descrierilor tehnice:</strong> Crearea automată de descrieri detaliate pentru proiecte și funcționalități</li>
+                    <li>📚 <strong>Documentația de cod:</strong> Scrierea automată de comentarii și documentație tehnică pentru cod</li>
+                    <li>💬 <strong>Comunicare clară:</strong> Crearea de mesaje clare și profesionale pentru echipă sau clienți</li>
+                    <li>🤖 <strong>Automatizarea răspunsurilor:</strong> Răspunsuri automate la întrebări repetitive din partea echipei</li>
+                    <li>📋 <strong>Planificarea proiectelor:</strong> Generarea de liste de sarcini inteligente și planificarea etapelor de dezvoltare</li>
+                </ul>
+
+                <h3>📊 Pentru un Analist de date:</h3>
+                <ul>
+                    <li>📈 <strong>Rapoarte sintetice:</strong> Generarea automată de rapoarte clare din date brute complexe</li>
+                    <li>🔍 <strong>Explicații simplificate:</strong> Transformarea rezultatelor statistice în limbaj accesibil pentru non-specialiști</li>
+                    <li>📊 <strong>Vizualizări textuale:</strong> Crearea de descrieri detaliate pentru grafice și vizualizări de date</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 9 -->
+        <div class="modern-slide" id="slide-9">
+            <div class="slide-header">
+                <div class="slide-icon">🎯</div>
+                <h2 class="slide-title">Beneficiile pentru Specialiștii IT</h2>
+                <div class="slide-number-badge">Slide 9</div>
+            </div>
+            <div class="slide-content">
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h4>⏰ Eficientizarea timpului</h4>
+                        <p>Automatizarea sarcinilor repetitive permite focusarea pe activități cu valoare adăugată mare</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>📈 Creșterea productivității</h4>
+                        <p>Îmbunătățirea vitezei de lucru și a calității output-ului prin instrumente AI</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>💬 Claritatea comunicării tehnice</h4>
+                        <p>Îmbunătățirea comunicării cu echipa și clienții prin documentație clară și precisă</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>💡 Sprijin în brainstorming</h4>
+                        <p>Generarea rapidă de idei și soluții creative pentru probleme complexe</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🤝 Colaborare îmbunătățită</h4>
+                        <p>Facilitarea colaborării în echipă prin documentație uniformă și standardizată</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>🔗 Integrare flexibilă</h4>
+                        <p>Posibilitatea de integrare cu alte instrumente și platforme IT existente</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4>✅ Reducerea erorilor</h4>
+                        <p>Minimizarea erorilor umane în documentație și procese repetitive</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10 -->
+        <div class="modern-slide conclusion-slide" id="slide-10">
+            <div class="slide-header">
+                <div class="slide-icon">🎯</div>
+                <h2 class="slide-title">Concluzie Generală</h2>
+                <div class="slide-number-badge">Slide 10</div>
+            </div>
+            <div class="slide-content">
+                <p>Inteligența artificială, prin aplicația <strong>Trae AI</strong>, dovedește că poate aduce valoare reală atât în educație, cât și în domeniul IT.</p>
+                
+                <h3>👨‍🏫 Pentru profesori:</h3>
+                <p>Trae AI devine un partener de încredere care simplifică pregătirea lecțiilor, oferă idei creative de predare și face procesul educațional mai interactiv și mai personalizat. În același timp, <strong>elevii</strong> beneficiază de feedback instant, exerciții adaptate și o modalitate modernă de a învăța în propriul ritm.</p>
+                
+                <h3>👨‍💻 Pentru specialiștii IT:</h3>
+                <p>Trae AI este un instrument puternic de automatizare și productivitate. Ajută la redactarea documentației tehnice, la organizarea sarcinilor și la generarea rapidă de soluții sau rapoarte, economisind timp și crescând precizia muncii.</p>
+                
+                <div class="highlight-box">
+                    <h3>🌟 Mesajul final:</h3>
+                    <p>În ambele domenii, <strong>Trae AI nu înlocuiește omul</strong>, ci îl sprijină: profesorul rămâne ghidul care formează minți, iar specialistul IT rămâne arhitectul inovației.</p>
+                    <p><em>Inteligența artificială amplifică creativitatea, eficiența și colaborarea, transformând modul în care învățăm, comunicăm și lucrăm.</em></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11 -->
+        <div class="modern-slide thank-you-slide" id="slide-11">
+            <div class="slide-header">
+                <div class="slide-icon">🙏</div>
+                <h2 class="slide-title">Mulțumesc pentru atenție!</h2>
+                <div class="slide-number-badge">Slide 11</div>
+            </div>
+            <div class="slide-content">
+                <div style="text-align: center; padding: 2rem;">
+                    <h2 style="color: white; font-size: 3rem; margin-bottom: 1rem;">🎉 Mulțumesc pentru atenție!</h2>
+                    <p style="color: white; opacity: 0.9; font-size: 1.5rem; margin-bottom: 2rem;">Întrebări și discuții</p>
+                    <div style="margin-top: 2rem;">
+                        <a href="index.html" class="btn btn-secondary" style="background: rgba(255,255,255,0.2); color: white; padding: 1rem 2rem; border-radius: 25px; text-decoration: none; font-weight: bold;">🏠 Înapoi la pagina principală</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>PrezentăriPro</h3>
+                    <p>Platforma ta pentru prezentări profesionale și educaționale de calitate.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Link-uri Rapide</h4>
+                    <ul>
+                        <li><a href="index.html">Acasă</a></li>
+                        <li><a href="prezentari.html">Prezentări</a></li>
+                        <li><a href="adauga.html">Adaugă Prezentare</a></li>
+                        <li><a href="despre.html">Despre</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>Email: contact@prezentaripro.ro</p>
+                    <p>Telefon: +40 123 456 789</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 PrezentăriPro. Toate drepturile rezervate.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Presentation navigation functionality
+        let currentSlide = 1;
+        const totalSlides = document.querySelectorAll('.modern-slide').length;
+
+        function showSlide(slideNumber) {
+            // Hide all slides
+            const slides = document.querySelectorAll('.modern-slide');
+            slides.forEach(slide => {
+                slide.classList.remove('active');
+                slide.style.display = 'none';
+            });
+
+            // Show current slide
+            const currentSlideElement = document.getElementById(`slide-${slideNumber}`);
+            if (currentSlideElement) {
+                currentSlideElement.style.display = 'block';
+                setTimeout(() => {
+                    currentSlideElement.classList.add('active');
+                }, 50);
+            }
+
+            // Update navigation
+            updateNavigation();
+            updateProgressBar();
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                currentSlide++;
+                showSlide(currentSlide);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 1) {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
+        }
+
+        function updateNavigation() {
+            const prevBtn = document.querySelector('.nav-btn.prev');
+            const nextBtn = document.querySelector('.nav-btn.next');
+            const slideCounter = document.querySelector('.slide-counter');
+
+            if (prevBtn) prevBtn.disabled = currentSlide === 1;
+            if (nextBtn) nextBtn.disabled = currentSlide === totalSlides;
+            if (slideCounter) slideCounter.textContent = `${currentSlide} / ${totalSlides}`;
+        }
+
+        function updateProgressBar() {
+            const progressBar = document.querySelector('.progress-fill');
+            if (progressBar) {
+                const progress = (currentSlide / totalSlides) * 100;
+                progressBar.style.width = `${progress}%`;
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
+            } else if (e.key === 'Home') {
+                e.preventDefault();
+                currentSlide = 1;
+                showSlide(currentSlide);
+            } else if (e.key === 'End') {
+                e.preventDefault();
+                currentSlide = totalSlides;
+                showSlide(currentSlide);
+            }
+        });
+
+        // Touch/swipe support for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = touchStartX - touchEndX;
+
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    nextSlide(); // Swipe left - next slide
+                } else {
+                    prevSlide(); // Swipe right - previous slide
+                }
+            }
+        }
+
+        // Initialize presentation
+        document.addEventListener('DOMContentLoaded', () => {
+            showSlide(1);
+            
+            // Add click handlers to navigation buttons
+            const prevBtn = document.querySelector('.nav-btn.prev');
+            const nextBtn = document.querySelector('.nav-btn.next');
+            
+            if (prevBtn) prevBtn.addEventListener('click', prevSlide);
+            if (nextBtn) nextBtn.addEventListener('click', nextSlide);
+
+            // Add animation to feature cards on slide 4
+            const featureCards = document.querySelectorAll('.feature-card');
+            featureCards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+            });
+
+            // Add hover effects to slides
+            const slides = document.querySelectorAll('.modern-slide');
+            slides.forEach(slide => {
+                slide.addEventListener('mouseenter', () => {
+                    slide.style.transform = 'translateY(-2px)';
+                });
+                
+                slide.addEventListener('mouseleave', () => {
+                    slide.style.transform = 'translateY(0)';
+                });
+            });
+        });
+
+        // Auto-advance slides (optional - can be enabled)
+        let autoAdvance = false;
+        let autoAdvanceInterval;
+
+        function toggleAutoAdvance() {
+            autoAdvance = !autoAdvance;
+            
+            if (autoAdvance) {
+                autoAdvanceInterval = setInterval(() => {
+                    if (currentSlide < totalSlides) {
+                        nextSlide();
+                    } else {
+                        currentSlide = 1;
+                        showSlide(currentSlide);
+                    }
+                }, 10000); // 10 seconds per slide
+            } else {
+                clearInterval(autoAdvanceInterval);
+            }
+        }
+    </script>
+</body>
+</html>
